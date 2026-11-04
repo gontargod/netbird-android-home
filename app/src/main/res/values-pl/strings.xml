@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NetBird Home</string>
+    <string name="quick_settings_tile_label">NetBird Home</string>
+    <!-- Network Automation -->
+    <string name="advanced_section_network_automation">Automatyzacja sieci</string>
+    <string name="advanced_auto_connect_mobile">Auto-połączenie na danych komórkowych</string>
+    <string name="advanced_auto_connect_mobile_desc">Automatycznie włącza NetBird po przełączeniu na dane komórkowe</string>
+    <string name="advanced_auto_disconnect_wifi">Auto-rozłączenie na Wi-Fi</string>
+    <string name="advanced_auto_disconnect_wifi_desc">Automatycznie rozłącza NetBird po połączeniu z Wi-Fi</string>
+    <string name="advanced_trusted_wifi_ssid">Zaufana sieć Wi-Fi (opcjonalnie)</string>
+    <string name="advanced_trusted_wifi_ssid_desc">Rozłączaj tylko w określonych sieciach Wi-Fi (pozostaw puste dla wszystkich sieci Wi-Fi)</string>
+    <string name="advanced_trusted_wifi_hint">np. MojeWiFi</string>
+    <string name="advanced_use_current_wifi">Użyj aktualnej sieci Wi-Fi</string>
+    <string name="advanced_trusted_wifi_saved">Zapisano zaufaną sieć Wi-Fi</string>
+    <string name="advanced_wifi_not_connected">Brak połączenia z siecią Wi-Fi</string>
+    <string name="advanced_location_permission_needed">Wymagane uprawnienie do lokalizacji, aby odczytać nazwę sieci Wi-Fi</string>
+</resources>
