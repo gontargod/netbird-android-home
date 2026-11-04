@@ -28,7 +28,14 @@
 
 <br>
 
-# NetBird Android client
+# NetBird Android client (NetBird Home - Smart Automation Edition)
+
+> 🚀 **Custom Fork featuring Smart Network Automation & Side-by-Side Installation!**
+> 
+> This fork extends the official NetBird Android client with seamless background automation:
+> - **🏠 Home Wi-Fi Auto-Disconnect:** Automatically disconnects NetBird when connected to your home or trusted Wi-Fi network.
+> - **📶 Mobile Data Auto-Connect:** Automatically activates NetBird when switching to cellular data (4G/5G).
+> - **👥 Side-by-Side Installation:** Configured with package ID `io.netbird.client.custom` and name **NetBird Home**, so it can be installed alongside the official NetBird app.
 
 The NetBird Android client allows connections from mobile devices running Android to private resources in the NetBird network.
 
