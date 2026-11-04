@@ -40,8 +40,8 @@ Both automation options live in the app under **Advanced** and are off by defaul
 
 ## Install
 
-This fork is not published on Google Play. Build the APK from source (see below) and install it manually,
-for example with `adb install app/build/outputs/apk/debug/app-debug.apk`.
+There is no prebuilt APK and the app is not published on Google Play. To use it you have to build it
+yourself from source, see [Building from source](#building-from-source) below.
 
 ## Building from source
 
