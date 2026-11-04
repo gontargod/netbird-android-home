@@ -4,40 +4,31 @@
   <img width="234" src="https://raw.githubusercontent.com/netbirdio/netbird/main/docs/media/logo-full.png"/>
 </p>
   <p>
-     <a href="https://github.com/netbirdio/netbird/blob/main/LICENSE">
+     <a href="LICENSE">
        <img height="20" src="https://www.gnu.org/graphics/gplv3-88x31.png" />
      </a>
-    <a href="https://docs.netbird.io/slack-url">
-        <img src="https://img.shields.io/badge/slack-@netbird-red.svg?logo=slack"/>
-     </a>    
   </p>
 </div>
 
+# NetBird Home (custom NetBird Android client)
 
-<p align="center">
-<strong>
-  Start using NetBird at <a href="https://netbird.io/pricing">netbird.io</a>
-  <br/>
-  See <a href="https://netbird.io/docs/">Documentation</a>
-  <br/>
-   Join our <a href="https://docs.netbird.io/slack-url">Slack channel</a>
-  <br/>
+A personal fork of the official [NetBird Android client](https://github.com/netbirdio/android-client)
+with background network automation. It is **not** affiliated with or endorsed by NetBird.
+For the NetBird service itself see the [official documentation](https://docs.netbird.io/).
 
-</strong>
-</p>
+## What's different from the official app
 
-<br>
+- **Auto-disconnect on Wi-Fi:** NetBird is turned off when you connect to Wi-Fi. Optionally, list one or more
+  trusted SSIDs (comma-separated) so it only disconnects on those networks, e.g. your home Wi-Fi.
+- **Auto-connect on mobile data:** NetBird is turned on when the device switches to cellular (4G/5G).
+  It is skipped if you disconnected manually.
+- **Side-by-side install:** the app uses the package ID `io.netbird.client.custom` and the name **NetBird Home**,
+  so it can be installed next to the official NetBird app.
 
-# NetBird Android client (NetBird Home - Smart Automation Edition)
+Both automation options live in the app under **Advanced** and are off by default.
 
-> 🚀 **Custom Fork featuring Smart Network Automation & Side-by-Side Installation!**
-> 
-> This fork extends the official NetBird Android client with seamless background automation:
-> - **🏠 Home Wi-Fi Auto-Disconnect:** Automatically disconnects NetBird when connected to your home or trusted Wi-Fi network.
-> - **📶 Mobile Data Auto-Connect:** Automatically activates NetBird when switching to cellular data (4G/5G).
-> - **👥 Side-by-Side Installation:** Configured with package ID `io.netbird.client.custom` and name **NetBird Home**, so it can be installed alongside the official NetBird app.
-
-The NetBird Android client allows connections from mobile devices running Android to private resources in the NetBird network.
+> Reading the Wi-Fi name requires the location permission on Android 10+. The app asks for it when you
+> enable the trusted-SSID filter.
 
 ## Screenshots
 
@@ -48,65 +39,92 @@ The NetBird Android client allows connections from mobile devices running Androi
 </p>
 
 ## Install
-You can download and install the app from the Google Play Store:
 
-[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" alt="Get it on Google Play" height="80">](https://play.google.com/store/apps/details?id=io.netbird.client)
-
-## Reporting bugs and requesting features
-
-NetBird uses a discussion-first workflow across all its repositories. Bug reports and
-feature requests for the Android client start in
-[netbird Discussions](https://github.com/netbirdio/netbird/discussions), not as issues here.
-
-| What you want to do | Where to go |
-| --- | --- |
-| Report a bug, regression, or unexpected behavior | [Issue Triage](https://github.com/netbirdio/netbird/discussions/new?category=issue-triage) |
-| Request a feature or share an idea | [Ideas & Feature Requests](https://github.com/netbirdio/netbird/discussions/new?category=ideas-feature-requests) |
-| Ask about setup, configuration, or self-hosting | [Q&A / Support](https://github.com/netbirdio/netbird/discussions/new?category=q-a-support) |
-| Report a security vulnerability | [Security policy](https://github.com/netbirdio/netbird/security/policy), never a public thread |
-
-Our team triages each discussion. Validated reports become issues in this repository,
-linked back to the discussion. See
-[How to use Discussions, Issues, and Pull Requests](https://github.com/netbirdio/netbird/discussions/6075)
-for the full workflow.
+This fork is not published on Google Play. Build the APK from source (see below) and install it manually,
+for example with `adb install app/build/outputs/apk/debug/app-debug.apk`.
 
 ## Building from source
-### Requirements
-We need the following software:
-* Java 1.11. Usually comes with Android Studio
-* android studio initialized with jdk and emulator (not covered here, is a req from android-client project)
-* gradle (https://gradle.org/install/)
 
-### Prepare development environment
-1. Close all repositories:
-> assuming you use a path like ~/projects locally
+### Requirements
+
+- Git
+- JDK (the one bundled with Android Studio is fine)
+- Android SDK with command-line tools (usually installed via Android Studio)
+- Android NDK `23.1.7779620`
+- [Go](https://go.dev/dl/) (used by `build-android-lib.sh` to build the NetBird core with `gomobile`)
+
+### 1. Clone with submodules
+
 ```shell
-mkdir ~/projects
-cd projects
-# clone netbird repo
-git clone --recurse-submodules git@github.com:netbirdio/android-client.git
+git clone --recurse-submodules https://github.com/gontargod/netbird-android-home.git
+cd netbird-android-home
 ```
-2. Checkout the repositories to the branches you want to test. If you want the latest, check the status information on your IDE or on https://github.com and verify the branch list and commit history.
-3. Export JDK and Android home vars, on macOS they are: (please contribute with Linux equivalent)
+
+If you already cloned without submodules:
+
 ```shell
-# replace <USERNAME> with your name
-export ANDROID_HOME=/Users/<USERNAME>/Library/Android/sdk
-export JAVA_HOME=/Applications/Android Studio.app/Contents/jbr/Contents/Home
+git submodule update --init --recursive
 ```
-4. Install NDK and CMake
+
+### 2. Set environment variables
+
+Adjust the paths to your system (Linux example):
+
 ```shell
-cd ~/projects/android-client
+export ANDROID_HOME=$HOME/Android/Sdk
+export JAVA_HOME=/path/to/android-studio/jbr
+```
+
+On macOS they are typically:
+
+```shell
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+```
+
+### 3. Install the NDK
+
+```shell
 $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "ndk;23.1.7779620"
 ```
-### Generate debug bundle
-Follow the steps to run locally until the step 5 then run the following steps:
-1. Build Go agent library
+
+### 4. Build the Go core library
+
 ```shell
-cd ~/projects/android-client
 ./build-android-lib.sh
 ```
-2. Run gradlew
+
+This produces `gomobile/netbird.aar`.
+
+### 5. Build the app
+
+Debug APK:
+
 ```shell
-cd ~/projects/android-client/android
-./gradlew bundleDebug  -PversionCode=123 -PversionName=1.2.3
+./gradlew assembleDebug -PversionCode=1 -PversionName=1.0.0
 ```
+
+The APK ends up in `app/build/outputs/apk/debug/`.
+
+Debug bundle:
+
+```shell
+./gradlew bundleDebug -PversionCode=1 -PversionName=1.0.0
+```
+
+To build under a different package ID, pass `-PNETBIRD_APPLICATION_ID=your.package.id`
+(or set it as an environment variable). The default is `io.netbird.client.custom`.
+
+## Reporting bugs
+
+- Problems with the automation features or anything specific to this fork: open an
+  [issue in this repository](../../issues).
+- Problems with the NetBird client or service in general: use the
+  [NetBird Discussions](https://github.com/netbirdio/netbird/discussions), which is how the upstream project
+  handles bug reports and feature requests.
+
+## License and credits
+
+Based on the official [NetBird Android client](https://github.com/netbirdio/android-client) and the
+[NetBird](https://github.com/netbirdio/netbird) core. Licensed under the
+[GNU General Public License v3.0](LICENSE), same as upstream.
